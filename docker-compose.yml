@@ -1,0 +1,34 @@
+services:
+  # MongoDB Service
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  # Back-end Service
+  app:
+    build: .
+    container_name: wegodevform-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - APP_PORT=3000
+      - CORS_URL=http://localhost:3001
+      - MONGODB_URI=mongodb://mongodb:27017/wegodevform
+      - MONGODB_HOST=mongodb
+      - MONGODB_PORT=27017
+      - MONGODB_DB_NAME=wegodevform
+      - JWT_ACCESS_TOKEN_SECRET=d438r6t43r87y43f8g4334h8ry873rjye27c3hyr387y&^R%^gtuuy87eht37ry(*YT&*T#*739i09ew)
+      - JWT_ACCESS_TOKEN_LIFE=15
+      - JWT_REFRESH_TOKEN_SECRET=^&Ts7q63n3c87r6T^%RSW%&^tb83dnh9iy*&Y*&y8ryn439dn(*dY87t87YNR&#YR&*34yn9f843n782y
+      - JWT_REFRESH_TOKEN_LIFE=24h
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb_data:
